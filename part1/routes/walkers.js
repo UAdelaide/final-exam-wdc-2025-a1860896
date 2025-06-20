@@ -20,7 +20,6 @@ router.get('/summary', async (req, res) => {
     await connection.end();
     res.status(200).json(rows);
 
-    res.status(500).json({ error: err.message });
 });
 
 module.exports = router;
