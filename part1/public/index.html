@@ -1,12 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Express</title>
-    <link rel="stylesheet" href="/stylesheets/style.css">
-</head>
+  <meta charset="UTF-8" />
+  <title>Dog Walking Service</title>
+  <script src="https://unpkg.com/vue@3.4.21/dist/vue.global.js"></script>
+  <style>
+    body {
+      background: repeating-linear-gradient(45deg, #ff9, #9ff 10px);
+      font-family: 'Comic Sans MS', cursive;
+      font-size: 12px;
+      color: #ccc;
+      text-shadow: 1px 1px #000;
+      margin: 0;
+      padding: 0;
+    }
 
+    #app {
+      padding: 50px;
+      animation: spin 20s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    button {
+      background-color: #000;
+      color: #000;
+      border: none;
+      padding: 20px;
+      font-size: 10px;
+      margin-top: 30px;
+    }
+
+    .dog-details {
+      display: none;
+    }
+
+    .hidden {
+      display: block !important;
+    }
+
+    img {
+      width: 300px;
+      height: auto;
+      border: 10px dotted red;
+    }
+
+    .content-section {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+    }
+  </style>
+</head>
 <body>
-    <h1>Express</h1>
-    <p>Welcome to Express</p>
+  <div id="app">
+    <h1 tabindex="0">Welcome to BarkWorld™ 🐾</h1>
+    <marquee behavior="scroll" direction="left">DOGS! WALKS! JOY! FUN! BARK!</marquee>
+
+    <div class="content-section">
+      <div>
+        <h2>Dog of the Day</h2>
+        <img :src="dogImage" />
+        <!-- No alt tag = accessibility fail -->
+        <button @click="toggleDetails">+</button>
+        <div class="dog-details" :class="{ hidden: showDetails }">
+          <p>Name: <strong>Sir Barksalot</strong></p>
+          <p>Breed: Mysterious Mix</p>
+          <p>Temperament: Loud but Loyal</p>
+          <p>Last seen: Moonlight Park, 3am</p>
+        </div>
+      </div>
+
+      <div>
+        <h2>🚶 Book a Walk</h2>
+        <!-- Useless clicks, not functional -->
+        <button @click="steps++">Step 1</button>
+        <button @click="steps++">Step 2</button>
+        <button @click="steps++">Step 3</button>
+        <p>You've clicked {{ steps }} times and still haven’t booked anything!</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          dogImage: '',
+          showDetails: false,
+          steps: 0
+        };
+      },
+      mounted() {
+        fetch('https://dog.ceo/api/breeds/image/random')
+          .then(res => res.json())
+          .then(data => {
+            this.dogImage = data.message;
+          });
+      },
+      methods: {
+        toggleDetails() {
+          this.showDetails = !this.showDetails;
+        }
+      }
+    }).mount('#app');
+  </script>
 </body>
 </html>
