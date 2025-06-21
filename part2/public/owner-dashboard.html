@@ -42,7 +42,14 @@
     <!-- Success or error messages -->
     <div v-if="message" class="alert alert-info">{{ message }}</div>
     <div v-if="error" class="alert alert-danger">{{ error }}</div>
+<button onclick="logout()" class="btn btn-outline-danger float-end">Log Out</button>
 
+<script>
+  function logout() {
+    fetch('/logout', { method: 'POST' })
+      .then(() => window.location.href = 'index.html'); // redirect to login page
+  }
+</script>
     <!-- List of walk requests -->
     <h2 class="mb-3">My Walk Requests</h2>
     <div class="row" v-if="walks.length > 0">
